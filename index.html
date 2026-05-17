@@ -10,7 +10,6 @@
 
     :root {
       --bg: #0d0f14;
-      --surface: #13161e;
       --card: #1a1e2a;
       --accent: #c8a96e;
       --accent2: #4fa3c0;
@@ -27,7 +26,6 @@
       overflow-x: hidden;
     }
 
-    /* Ambient background */
     body::before {
       content: '';
       position: fixed;
@@ -65,7 +63,6 @@
       to   { opacity: 1; transform: translateY(0); }
     }
 
-    /* Photo */
     .photo-wrap {
       display: flex;
       justify-content: center;
@@ -88,9 +85,7 @@
       z-index: 0;
     }
 
-    @keyframes spin {
-      to { transform: rotate(360deg); }
-    }
+    @keyframes spin { to { transform: rotate(360deg); } }
 
     .photo-ring img {
       position: relative;
@@ -105,7 +100,6 @@
       margin: 4px;
     }
 
-    /* Name & title */
     .name {
       font-family: 'Playfair Display', serif;
       font-size: 2rem;
@@ -116,13 +110,10 @@
       color: #fff;
     }
 
-    .name span {
-      color: var(--accent);
-    }
+    .name span { color: var(--accent); }
 
     .title {
       font-size: 0.82rem;
-      font-weight: 400;
       color: var(--muted);
       text-align: center;
       letter-spacing: 0.12em;
@@ -130,7 +121,6 @@
       margin-top: 8px;
     }
 
-    /* Divider */
     .divider {
       width: 48px;
       height: 2px;
@@ -139,7 +129,6 @@
       border-radius: 2px;
     }
 
-    /* Bio snippet */
     .bio {
       text-align: center;
       font-size: 0.88rem;
@@ -148,17 +137,9 @@
       margin-bottom: 32px;
     }
 
-    .bio strong {
-      color: var(--text);
-      font-weight: 500;
-    }
+    .bio strong { color: var(--text); font-weight: 500; }
 
-    /* Buttons */
-    .links {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-    }
+    .links { display: flex; flex-direction: column; gap: 12px; }
 
     .btn {
       display: flex;
@@ -176,103 +157,48 @@
       animation: fadeUp 0.8s cubic-bezier(.16,1,.3,1) both;
     }
 
-    .btn:nth-child(1) { animation-delay: 0.1s; }
+    .btn:nth-child(1) { animation-delay: 0.10s; }
     .btn:nth-child(2) { animation-delay: 0.18s; }
     .btn:nth-child(3) { animation-delay: 0.26s; }
     .btn:nth-child(4) { animation-delay: 0.34s; }
 
-    .btn:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-    }
+    .btn:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
 
     .btn-icon {
-      width: 38px;
-      height: 38px;
+      width: 38px; height: 38px;
       border-radius: 10px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      display: flex; align-items: center; justify-content: center;
       flex-shrink: 0;
     }
 
-    .btn-icon svg {
-      width: 20px;
-      height: 20px;
-    }
+    .btn-icon svg { width: 20px; height: 20px; }
+    .btn-label { flex: 1; }
+    .btn-label-main { display: block; color: #fff; }
+    .btn-label-sub { display: block; font-size: 0.75rem; color: var(--muted); font-weight: 400; margin-top: 1px; }
+    .btn-arrow { color: var(--muted); font-size: 1.1rem; transition: transform 0.18s ease, color 0.18s ease; }
+    .btn:hover .btn-arrow { transform: translateX(3px); color: var(--text); }
 
-    .btn-label {
-      flex: 1;
-    }
-
-    .btn-label-main {
-      display: block;
-      color: #fff;
-    }
-
-    .btn-label-sub {
-      display: block;
-      font-size: 0.75rem;
-      color: var(--muted);
-      font-weight: 400;
-      margin-top: 1px;
-    }
-
-    .btn-arrow {
-      color: var(--muted);
-      font-size: 1.1rem;
-      transition: transform 0.18s ease, color 0.18s ease;
-    }
-
-    .btn:hover .btn-arrow {
-      transform: translateX(3px);
-      color: var(--text);
-    }
-
-    /* WhatsApp */
-    .btn-wa {
-      background: rgba(37,211,102,0.08);
-      border-color: rgba(37,211,102,0.2);
-    }
+    .btn-wa  { background: rgba(37,211,102,0.08);  border-color: rgba(37,211,102,0.2); }
     .btn-wa:hover { background: rgba(37,211,102,0.14); border-color: rgba(37,211,102,0.4); }
     .btn-wa .btn-icon { background: rgba(37,211,102,0.15); }
     .btn-wa .btn-icon svg { fill: #25d366; }
 
-    /* Email */
-    .btn-email {
-      background: rgba(200,169,110,0.08);
-      border-color: rgba(200,169,110,0.2);
-    }
+    .btn-email { background: rgba(200,169,110,0.08); border-color: rgba(200,169,110,0.2); }
     .btn-email:hover { background: rgba(200,169,110,0.14); border-color: rgba(200,169,110,0.4); }
     .btn-email .btn-icon { background: rgba(200,169,110,0.15); }
     .btn-email .btn-icon svg { fill: var(--accent); }
 
-    /* LinkedIn */
-    .btn-li {
-      background: rgba(10,102,194,0.1);
-      border-color: rgba(10,102,194,0.25);
-    }
+    .btn-li { background: rgba(10,102,194,0.1); border-color: rgba(10,102,194,0.25); }
     .btn-li:hover { background: rgba(10,102,194,0.18); border-color: rgba(10,102,194,0.5); }
     .btn-li .btn-icon { background: rgba(10,102,194,0.2); }
     .btn-li .btn-icon svg { fill: #0a66c2; }
 
-    /* CV */
-    .btn-cv {
-      background: rgba(79,163,192,0.08);
-      border-color: rgba(79,163,192,0.2);
-    }
+    .btn-cv { background: rgba(79,163,192,0.08); border-color: rgba(79,163,192,0.2); }
     .btn-cv:hover { background: rgba(79,163,192,0.14); border-color: rgba(79,163,192,0.4); }
     .btn-cv .btn-icon { background: rgba(79,163,192,0.15); }
     .btn-cv .btn-icon svg { fill: var(--accent2); }
 
-    /* Footer */
-    .footer {
-      text-align: center;
-      margin-top: 32px;
-      font-size: 0.75rem;
-      color: var(--muted);
-      opacity: 0.6;
-    }
+    .footer { text-align: center; margin-top: 32px; font-size: 0.75rem; color: var(--muted); opacity: 0.6; }
 
     @media (max-width: 480px) {
       .card { padding: 36px 24px 32px; }
@@ -284,35 +210,26 @@
 <div class="page">
   <div class="card">
 
-    <!-- Photo -->
     <div class="photo-wrap">
       <div class="photo-ring">
         <img src="pic.jpg" alt="Cesar M. Manna" />
       </div>
     </div>
 
-    <!-- Name -->
     <h1 class="name">Cesar M. <span>Manna</span></h1>
     <p class="title">Ph.D. &nbsp;·&nbsp; R&amp;D Director &nbsp;·&nbsp; Engineering Leader</p>
-
     <div class="divider"></div>
-
-    <!-- Bio -->
     <p class="bio">
       <strong>15+ years</strong> leading multidisciplinary R&amp;D programs in materials,<br/>
       devices &amp; advanced manufacturing. <strong>6 granted patents.</strong><br/>
       Based in Rehovot, Israel &nbsp;·&nbsp; EU Passport
     </p>
 
-    <!-- Links -->
     <div class="links">
 
-      <!-- WhatsApp -->
       <a class="btn btn-wa" href="https://wa.me/972543300265?text=Hi%20Cesar%2C%20I%20want%20to%20network!" target="_blank" rel="noopener">
         <div class="btn-icon">
-          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
-          </svg>
+          <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
         </div>
         <div class="btn-label">
           <span class="btn-label-main">WhatsApp me</span>
@@ -321,12 +238,9 @@
         <span class="btn-arrow">→</span>
       </a>
 
-      <!-- Email -->
       <a class="btn btn-email" href="https://mail.google.com/mail/?view=cm&to=cesar.m.manna@gmail.com" target="_blank" rel="noopener">
         <div class="btn-icon">
-          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-            <path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
-          </svg>
+          <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
         </div>
         <div class="btn-label">
           <span class="btn-label-main">Send an email</span>
@@ -335,12 +249,9 @@
         <span class="btn-arrow">→</span>
       </a>
 
-      <!-- LinkedIn -->
       <a class="btn btn-li" href="https://www.linkedin.com/in/cesarmmanna" target="_blank" rel="noopener">
         <div class="btn-icon">
-          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-            <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
-          </svg>
+          <svg viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
         </div>
         <div class="btn-label">
           <span class="btn-label-main">LinkedIn</span>
@@ -349,16 +260,14 @@
         <span class="btn-arrow">→</span>
       </a>
 
-      <!-- Download CV -->
-      <a class="btn btn-cv" href="Cesar_M_Manna.pdf" download="Cesar_M_Manna_CV.pdf">
+      <!-- PDF opens in new tab — GitHub Pages blocks the download attribute cross-origin -->
+      <a class="btn btn-cv" href="Cesar_M_Manna.pdf" target="_blank" rel="noopener">
         <div class="btn-icon">
-          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-            <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8l-6-6zm-1 7V3.5L18.5 9H13zm-2 8l-4-4h2.5v-4h3v4H14l-3 4z"/>
-          </svg>
+          <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8l-6-6zm-1 7V3.5L18.5 9H13zm-2 8l-4-4h2.5v-4h3v4H14l-3 4z"/></svg>
         </div>
         <div class="btn-label">
-          <span class="btn-label-main">Download CV</span>
-          <span class="btn-label-sub">PDF · R&amp;D Director resume</span>
+          <span class="btn-label-main">View / Download CV</span>
+          <span class="btn-label-sub">Opens PDF · save from browser</span>
         </div>
         <span class="btn-arrow">→</span>
       </a>
