@@ -698,17 +698,31 @@
       setProgress(currentX / maxTravel);
     }, { passive: true });
 
+    var swipeTriggered = false;
+
     btn.addEventListener('touchend', function(e) {
       if (!dragging) return;
-      e.preventDefault(); // stop the ghost click from firing
+      dragging = false;
+      btn.classList.remove('swiping');
       if (currentX / maxTravel >= THRESHOLD) {
+        swipeTriggered = true;
         trigger();
       } else {
         reset();
       }
     });
 
-    // ---- MOUSE (desktop fallback) ----
+    // After touchend, browser fires a click ~300ms later.
+    // If swipe triggered, block it. If not (just a tap), let the native anchor handle it.
+    btn.addEventListener('click', function(e) {
+      if (swipeTriggered) {
+        e.preventDefault();
+        swipeTriggered = false;
+      }
+      // else: normal tap — native <a> href handles it automatically
+    });
+
+    // ---- MOUSE (desktop) ----
     thumb.addEventListener('mousedown', function(e) {
       e.preventDefault();
       getTrack();
@@ -724,6 +738,8 @@
 
       function onUp() {
         if (!dragging) return;
+        dragging = false;
+        btn.classList.remove('swiping');
         if (currentX / maxTravel >= THRESHOLD) {
           trigger();
         } else {
@@ -735,12 +751,6 @@
 
       document.addEventListener('mousemove', onMove);
       document.addEventListener('mouseup', onUp);
-    });
-
-    // Click fallback for desktop
-    btn.addEventListener('click', function(e) {
-      if (dragging) return;
-      nativeLink.click();
     });
   });
 
