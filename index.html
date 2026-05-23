@@ -362,7 +362,14 @@
       display: none;
     }
 
-    /* Per-button colour theming */
+    /* Hidden native anchor inside each swipe button — guarantees real link behaviour on mobile */
+    .swipe-native-link {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      opacity: 0;
+      pointer-events: none;
+    }
     .swipe-btn.btn-wa  { background: rgba(37,211,102,0.08);  border-color: rgba(37,211,102,0.2); }
     .swipe-btn.btn-wa .swipe-fill   { background: #25d366; }
     .swipe-btn.btn-wa .swipe-thumb  { background: #25d366; }
@@ -470,7 +477,9 @@
     <div class="links">
 
       <!-- WhatsApp -->
-      <div class="swipe-btn btn-wa" data-action="wa">
+      <!-- WhatsApp -->
+      <div class="swipe-btn btn-wa">
+        <a class="swipe-native-link" href="https://wa.me/972543300265?text=Hi%20Cesar%2C%20I%20want%20to%20network!" target="_blank" rel="noopener"></a>
         <div class="swipe-fill"></div>
         <div class="swipe-reveal">Luck is what happens</div>
         <div class="swipe-label">
@@ -486,7 +495,8 @@
       </div>
 
       <!-- Email -->
-      <div class="swipe-btn btn-email" data-action="email">
+      <div class="swipe-btn btn-email">
+        <a class="swipe-native-link" href="mailto:cesar.m.manna@gmail.com"></a>
         <div class="swipe-fill"></div>
         <div class="swipe-reveal">when preparation</div>
         <div class="swipe-label">
@@ -502,7 +512,8 @@
       </div>
 
       <!-- LinkedIn -->
-      <div class="swipe-btn btn-li" data-action="li">
+      <div class="swipe-btn btn-li">
+        <a class="swipe-native-link" href="https://www.linkedin.com/in/cesarmmanna" target="_blank" rel="noopener"></a>
         <div class="swipe-fill"></div>
         <div class="swipe-reveal">meets opportunity.</div>
         <div class="swipe-label">
@@ -518,7 +529,8 @@
       </div>
 
       <!-- CV -->
-      <div class="swipe-btn btn-cv" data-action="cv">
+      <div class="swipe-btn btn-cv">
+        <a class="swipe-native-link" href="Cesar_M_Manna.pdf" target="_blank" rel="noopener"></a>
         <div class="swipe-fill"></div>
         <div class="swipe-reveal">— Seneca</div>
         <div class="swipe-label">
@@ -534,7 +546,8 @@
       </div>
 
       <!-- Save Contact -->
-      <div class="swipe-btn btn-contact" data-action="contact">
+      <div class="swipe-btn btn-contact">
+        <a class="swipe-native-link" href="#" id="contactLink"></a>
         <div class="swipe-fill"></div>
         <div class="swipe-reveal">Add to your phone</div>
         <div class="swipe-label">
@@ -592,46 +605,24 @@
 // SWIPE BUTTON ENGINE
 // =====================
 (function() {
-  var isMobile = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0);
+  // Pre-build the vCard blob URL for the contact button
+  var v = "BEGIN:VCARD\nVERSION:3.0\nFN:Cesar M. Manna\nN:Manna;Cesar;M.;;\nTITLE:R&D Director | Ph.D.\nTEL;TYPE=CELL:+972543300265\nEMAIL:cesar.m.manna@gmail.com\nURL:https://cesarmmanna.github.io\nEND:VCARD";
+  var vcardBlob = new Blob([v], {type:'text/vcard'});
+  var vcardUrl  = URL.createObjectURL(vcardBlob);
+  var contactLink = document.getElementById('contactLink');
+  contactLink.href     = vcardUrl;
+  contactLink.download = 'Cesar_M_Manna.vcf';
+  delete contactLink.target;
+
   var THRESHOLD = 0.72;
 
-  function makeLink(href, isMailto, download) {
-    var a = document.createElement('a');
-    a.href = href;
-    a.style.display = 'none';
-    if (!isMailto && !download) a.target = '_blank';
-    if (download) a.download = download;
-    document.body.appendChild(a);
-    return a;
-  }
-
-  var waLink      = makeLink('https://wa.me/972543300265?text=Hi%20Cesar%2C%20I%20want%20to%20network!', false);
-  var emailLink   = makeLink('mailto:cesar.m.manna@gmail.com', true);
-  var liLink      = makeLink('https://www.linkedin.com/in/cesarmmanna', false);
-  var cvLink      = makeLink('Cesar_M_Manna.pdf', false);
-
-  var actions = {
-    wa:      function() { waLink.click(); },
-    email:   function() { emailLink.click(); },
-    li:      function() { liLink.click(); },
-    cv:      function() { cvLink.click(); },
-    contact: function() {
-      var v = "BEGIN:VCARD\nVERSION:3.0\nFN:Cesar M. Manna\nN:Manna;Cesar;M.;;\nTITLE:R&D Director | Ph.D.\nTEL;TYPE=CELL:+972543300265\nEMAIL:cesar.m.manna@gmail.com\nURL:https://cesarmmanna.github.io\nEND:VCARD";
-      var b = new Blob([v], {type:'text/vcard'});
-      var u = URL.createObjectURL(b);
-      var a = makeLink(u, false, 'Cesar_M_Manna.vcf');
-      a.click();
-      setTimeout(function() { URL.revokeObjectURL(u); a.remove(); }, 1000);
-    }
-  };
-
   document.querySelectorAll('.swipe-btn').forEach(function(btn) {
+    var nativeLink = btn.querySelector('.swipe-native-link');
     var thumb   = btn.querySelector('.swipe-thumb');
     var fill    = btn.querySelector('.swipe-fill');
     var reveal  = btn.querySelector('.swipe-reveal');
     var label   = btn.querySelector('.swipe-label');
     var chevrons = btn.querySelector('.swipe-chevrons');
-    var action  = actions[btn.dataset.action];
 
     var dragging = false;
     var startX = 0;
@@ -676,18 +667,16 @@
     }
 
     function trigger() {
-      // Fire action IMMEDIATELY — mobile browsers block navigation inside setTimeout
-      action();
-      // Then do the visual snap-back animation
+      // Click the real native anchor — works on all mobile browsers
+      nativeLink.click();
+      // Visual reset
       thumb.style.transition = 'transform 0.35s cubic-bezier(.16,1,.3,1)';
       fill.style.transition  = 'width 0.35s cubic-bezier(.16,1,.3,1)';
       reveal.style.transition = 'clip-path 0.35s ease';
       dragging = false;
       btn.classList.remove('swiping');
-      btn.classList.add('done');
       setProgress(0);
       setTimeout(function() {
-        btn.classList.remove('done');
         thumb.style.transition = '';
         fill.style.transition  = '';
         reveal.style.transition = '';
@@ -748,10 +737,10 @@
       document.addEventListener('mouseup', onUp);
     });
 
-    // Click fallback for desktop ONLY
+    // Click fallback for desktop
     btn.addEventListener('click', function(e) {
-      if (isMobile) return; // touch devices handle via touchend
-      if (!dragging) action();
+      if (dragging) return;
+      nativeLink.click();
     });
   });
 
