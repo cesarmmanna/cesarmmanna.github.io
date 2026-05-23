@@ -27,22 +27,34 @@
     }
 
     /* === SHIFTING GRADIENT BACKGROUND === */
+    body {
+      background: var(--bg);
+      animation: bgPulse 8s ease-in-out infinite alternate;
+    }
+
+    @keyframes bgPulse {
+      0%   { background-color: #0d0f14; }
+      33%  { background-color: #0d1218; }
+      66%  { background-color: #10100f; }
+      100% { background-color: #0a0d16; }
+    }
+
     body::before {
       content: '';
       position: fixed;
       inset: 0;
       background:
-        radial-gradient(ellipse 60% 50% at 70% 20%, rgba(79,163,192,0.07) 0%, transparent 60%),
-        radial-gradient(ellipse 50% 40% at 20% 80%, rgba(200,169,110,0.06) 0%, transparent 60%);
+        radial-gradient(ellipse 70% 60% at 70% 20%, rgba(79,163,192,0.18) 0%, transparent 60%),
+        radial-gradient(ellipse 60% 50% at 20% 80%, rgba(200,169,110,0.15) 0%, transparent 60%);
       pointer-events: none;
       z-index: 0;
-      animation: bgShift 10s ease-in-out infinite alternate;
+      animation: ambientShift 8s ease-in-out infinite alternate;
     }
 
-    @keyframes bgShift {
-      0%   { opacity: 1; filter: hue-rotate(0deg); }
-      50%  { opacity: 0.7; filter: hue-rotate(20deg); }
-      100% { opacity: 1; filter: hue-rotate(-10deg); }
+    @keyframes ambientShift {
+      0%   { opacity: 0.6; transform: scale(1)   translateX(0px); }
+      50%  { opacity: 1;   transform: scale(1.08) translateX(-20px); }
+      100% { opacity: 0.8; transform: scale(1.04) translateX(20px); }
     }
 
     .page {
@@ -107,18 +119,19 @@
       border: 4px solid var(--card);
       display: block;
       margin: 4px;
-      transition: box-shadow 0.4s ease, transform 0.3s ease;
+      transition: box-shadow 0.4s ease, transform 0.35s cubic-bezier(.16,1,.3,1);
     }
 
     /* Desktop hover glow */
     .photo-ring:hover img {
-      box-shadow: 0 0 32px 8px rgba(200,169,110,0.35), 0 0 64px 16px rgba(79,163,192,0.15);
+      box-shadow: 0 0 40px 12px rgba(200,169,110,0.5), 0 0 80px 24px rgba(79,163,192,0.25);
+      transform: scale(1.03);
     }
 
-    /* Mobile tap scale */
+    /* Mobile tap */
     .photo-ring img.tapped {
-      transform: scale(1.04);
-      box-shadow: 0 0 32px 8px rgba(200,169,110,0.35), 0 0 64px 16px rgba(79,163,192,0.15);
+      transform: scale(1.08);
+      box-shadow: 0 0 50px 16px rgba(200,169,110,0.6), 0 0 90px 30px rgba(79,163,192,0.3);
     }
 
     /* === NAME SHIMMER === */
@@ -131,19 +144,21 @@
       line-height: 1.1;
       background: linear-gradient(
         90deg,
-        #ffffff 0%,
-        #ffffff 30%,
-        var(--accent) 45%,
-        #ffe8b0 50%,
-        var(--accent) 55%,
-        #ffffff 70%,
-        #ffffff 100%
+        #aaaaaa 0%,
+        #ffffff 20%,
+        #ffe066 38%,
+        #ffffff 44%,
+        #c8a96e 50%,
+        #ffffff 56%,
+        #ffe066 62%,
+        #ffffff 80%,
+        #aaaaaa 100%
       );
-      background-size: 200% auto;
+      background-size: 250% auto;
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
-      animation: shimmer 4s linear infinite;
+      animation: shimmer 3s linear infinite;
     }
 
     @keyframes shimmer {
@@ -160,7 +175,7 @@
       margin-top: 8px;
     }
 
-    /* Animated divider line */
+    /* Animated divider */
     .divider {
       width: 48px;
       height: 2px;
@@ -220,24 +235,22 @@
     /* Desktop hover */
     .btn:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
 
+    /* Mobile press */
+    .btn:active { transform: scale(0.96); transition: transform 0.08s ease; }
+
     /* === TAP RIPPLE === */
     .ripple {
       position: absolute;
       border-radius: 50%;
       transform: scale(0);
-      animation: rippleAnim 0.55s linear;
-      background: rgba(255,255,255,0.18);
+      animation: rippleAnim 0.7s ease-out forwards;
+      background: rgba(255,255,255,0.28);
       pointer-events: none;
     }
 
     @keyframes rippleAnim {
-      to { transform: scale(4); opacity: 0; }
-    }
-
-    /* Active press feel on mobile */
-    .btn:active {
-      transform: scale(0.97);
-      transition: transform 0.08s ease;
+      0%   { transform: scale(0);   opacity: 1; }
+      100% { transform: scale(5);   opacity: 0; }
     }
 
     .btn-icon {
@@ -467,27 +480,27 @@
     URL.revokeObjectURL(url);
   }
 
-  // === TAP RIPPLE on buttons ===
+  // === TAP RIPPLE — large and visible ===
   document.querySelectorAll('.btn').forEach(function(btn) {
     btn.addEventListener('touchstart', function(e) {
       var touch = e.touches[0];
       var rect  = btn.getBoundingClientRect();
-      var size  = Math.max(rect.width, rect.height);
+      var size  = Math.max(rect.width, rect.height) * 1.5;
       var x = touch.clientX - rect.left - size / 2;
       var y = touch.clientY - rect.top  - size / 2;
       var ripple = document.createElement('span');
       ripple.className = 'ripple';
       ripple.style.cssText = 'width:' + size + 'px;height:' + size + 'px;left:' + x + 'px;top:' + y + 'px;';
       btn.appendChild(ripple);
-      setTimeout(function() { ripple.remove(); }, 600);
+      setTimeout(function() { ripple.remove(); }, 750);
     }, { passive: true });
   });
 
-  // === PHOTO TAP SCALE on mobile ===
+  // === PHOTO TAP — big zoom + glow ===
   var img = document.getElementById('profileImg');
   img.addEventListener('touchstart', function() {
     img.classList.add('tapped');
-    setTimeout(function() { img.classList.remove('tapped'); }, 600);
+    setTimeout(function() { img.classList.remove('tapped'); }, 700);
   }, { passive: true });
 </script>
 </body>
