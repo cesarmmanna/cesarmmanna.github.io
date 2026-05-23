@@ -592,12 +592,13 @@
 // SWIPE BUTTON ENGINE
 // =====================
 (function() {
-  var THRESHOLD = 0.72; // 72% of track = trigger
+  var isMobile = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0);
+  var THRESHOLD = 0.72;
 
   var actions = {
-    wa:      function() { window.open('https://wa.me/972543300265?text=Hi%20Cesar%2C%20I%20want%20to%20network!', '_blank'); },
+    wa:      function() { window.location.href = 'https://wa.me/972543300265?text=Hi%20Cesar%2C%20I%20want%20to%20network!'; },
     email:   function() { window.location.href = 'mailto:cesar.m.manna@gmail.com'; },
-    li:      function() { window.open('https://www.linkedin.com/in/cesarmmanna', '_blank'); },
+    li:      function() { window.location.href = 'https://www.linkedin.com/in/cesarmmanna'; },
     cv:      function() { window.open('Cesar_M_Manna.pdf', '_blank'); },
     contact: function() {
       var v = "BEGIN:VCARD\nVERSION:3.0\nFN:Cesar M. Manna\nN:Manna;Cesar;M.;;\nTITLE:R&D Director | Ph.D.\nTEL;TYPE=CELL:+972543300265\nEMAIL:cesar.m.manna@gmail.com\nURL:https://cesarmmanna.github.io\nEND:VCARD";
@@ -689,8 +690,9 @@
       setProgress(currentX / maxTravel);
     }, { passive: true });
 
-    btn.addEventListener('touchend', function() {
+    btn.addEventListener('touchend', function(e) {
       if (!dragging) return;
+      e.preventDefault(); // stop the ghost click from firing
       if (currentX / maxTravel >= THRESHOLD) {
         trigger();
       } else {
@@ -727,12 +729,10 @@
       document.addEventListener('mouseup', onUp);
     });
 
-    // Click fallback for desktop (clicking anywhere on button)
+    // Click fallback for desktop ONLY
     btn.addEventListener('click', function(e) {
-      // Only fire if not dragging (avoid double-trigger)
-      if (!dragging) {
-        action();
-      }
+      if (isMobile) return; // touch devices handle via touchend
+      if (!dragging) action();
     });
   });
 
