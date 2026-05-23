@@ -595,18 +595,33 @@
   var isMobile = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0);
   var THRESHOLD = 0.72;
 
+  function makeLink(href, isMailto, download) {
+    var a = document.createElement('a');
+    a.href = href;
+    a.style.display = 'none';
+    if (!isMailto && !download) a.target = '_blank';
+    if (download) a.download = download;
+    document.body.appendChild(a);
+    return a;
+  }
+
+  var waLink      = makeLink('https://wa.me/972543300265?text=Hi%20Cesar%2C%20I%20want%20to%20network!', false);
+  var emailLink   = makeLink('mailto:cesar.m.manna@gmail.com', true);
+  var liLink      = makeLink('https://www.linkedin.com/in/cesarmmanna', false);
+  var cvLink      = makeLink('Cesar_M_Manna.pdf', false);
+
   var actions = {
-    wa:      function() { window.location.href = 'https://wa.me/972543300265?text=Hi%20Cesar%2C%20I%20want%20to%20network!'; },
-    email:   function() { window.location.href = 'mailto:cesar.m.manna@gmail.com'; },
-    li:      function() { window.location.href = 'https://www.linkedin.com/in/cesarmmanna'; },
-    cv:      function() { window.open('Cesar_M_Manna.pdf', '_blank'); },
+    wa:      function() { waLink.click(); },
+    email:   function() { emailLink.click(); },
+    li:      function() { liLink.click(); },
+    cv:      function() { cvLink.click(); },
     contact: function() {
       var v = "BEGIN:VCARD\nVERSION:3.0\nFN:Cesar M. Manna\nN:Manna;Cesar;M.;;\nTITLE:R&D Director | Ph.D.\nTEL;TYPE=CELL:+972543300265\nEMAIL:cesar.m.manna@gmail.com\nURL:https://cesarmmanna.github.io\nEND:VCARD";
       var b = new Blob([v], {type:'text/vcard'});
       var u = URL.createObjectURL(b);
-      var a = document.createElement('a');
-      a.href = u; a.download = 'Cesar_M_Manna.vcf'; a.click();
-      URL.revokeObjectURL(u);
+      var a = makeLink(u, false, 'Cesar_M_Manna.vcf');
+      a.click();
+      setTimeout(function() { URL.revokeObjectURL(u); a.remove(); }, 1000);
     }
   };
 
@@ -661,18 +676,22 @@
     }
 
     function trigger() {
-      // Snap to end briefly then fire
-      thumb.style.transition = 'transform 0.15s ease';
-      fill.style.transition  = 'width 0.15s ease';
-      setProgress(1);
+      // Fire action IMMEDIATELY — mobile browsers block navigation inside setTimeout
+      action();
+      // Then do the visual snap-back animation
+      thumb.style.transition = 'transform 0.35s cubic-bezier(.16,1,.3,1)';
+      fill.style.transition  = 'width 0.35s cubic-bezier(.16,1,.3,1)';
+      reveal.style.transition = 'clip-path 0.35s ease';
+      dragging = false;
+      btn.classList.remove('swiping');
       btn.classList.add('done');
+      setProgress(0);
       setTimeout(function() {
-        action();
-        setTimeout(function() {
-          btn.classList.remove('done');
-          reset();
-        }, 400);
-      }, 200);
+        btn.classList.remove('done');
+        thumb.style.transition = '';
+        fill.style.transition  = '';
+        reveal.style.transition = '';
+      }, 400);
     }
 
     // ---- TOUCH ----
