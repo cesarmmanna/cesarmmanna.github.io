@@ -378,9 +378,12 @@ function saveContact() {
 
     btn.addEventListener('touchend', function() {
       if (!dragging) return;
-      // If threshold NOT met, reset visuals. Navigation handled by native <a> tag.
-      // If threshold IS met, also let native <a> tag handle navigation.
+      var ratio = currentX / maxTravel;
       reset();
+      // If swiped far enough, simulate a click to trigger the native href/onclick
+      if (ratio >= THRESHOLD) {
+        btn.click();
+      }
     }, { passive: true });
 
     // Mouse drag for desktop
